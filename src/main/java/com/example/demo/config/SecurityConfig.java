@@ -16,8 +16,8 @@ import com.example.demo.jwt.JwtAuthenticationEntryPoint;
 import com.example.demo.jwt.JwtSecurityConfig;
 import com.example.demo.jwt.TokenProvider;
 
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity//기본적인 웹 보안을 활성화하겠다
+@EnableGlobalMethodSecurity(prePostEnabled = true)//@PreAuthorize 어노테이션을 메소드 단위로 추가하기위해 적용
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -54,7 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .csrf().disable()
 
-
+                // 예외처리: 우리가 만든 class들 추가
                 .exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .accessDeniedHandler(jwtAccessDeniedHandler)
@@ -71,12 +71,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 
                 .and()
-                .authorizeRequests()
+                .authorizeRequests()//httpServletRequest를 사용하는 요청들에 대한 접근제한 설정
                 .antMatchers("/api/hello").permitAll()
-                .antMatchers("/api/authenticate").permitAll()
-                .antMatchers("/api/signup").permitAll()
+                .antMatchers("/api/authenticate").permitAll()//로그인
+                .antMatchers("/api/signup").permitAll()//회원가입
 
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()//나머지 요청은 모두 인증요구
 
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider));

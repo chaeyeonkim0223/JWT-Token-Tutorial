@@ -45,7 +45,7 @@ public class UserService {
 
         return userRepository.save(user);
     }
-    //어떠한 username 이든 이거에 해당하는 이름과 권한정보 가져올수있음
+    //어떠한 username 이든 이거에 해당하는 유저정보, 권한정보 가져올수있음
     @Transactional(readOnly = true)
     public Optional<User> getUserWithAuthorities(String username) {
         return userRepository.findOneWithAuthoritiesByUsername(username);

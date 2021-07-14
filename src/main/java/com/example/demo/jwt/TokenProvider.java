@@ -62,7 +62,7 @@ public class TokenProvider implements InitializingBean {
          .setExpiration(validity)
          .compact();
    }
-   //token-> Authentication
+   //token-> Authentication객체 리턴
    public Authentication getAuthentication(String token) {
       Claims claims = Jwts
               .parserBuilder()
